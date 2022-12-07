@@ -1,0 +1,73 @@
+function options = default_options_mesh2fieldshift_FPM(interface)
+
+
+%allowed interfaces
+allowed_interfaces = {'bloodtissue','airtissue'};
+%make sure input is character array
+interface = char(interface);
+
+%strength of main magnetic field
+options.B0 = 3;
+%direction of main magnetic field
+options.B0vec = [1 0 0];
+
+if strcmp(interface,'bloodtissue')
+    disp('blood-tissue interface!');
+    %define the hematocrit fraction
+    options.HCT = 0.5;
+    %magnetic susceptibilty of deoxyhaemaglobin is 2.26 ppm
+    options.X_dHb = 2.26 * 10^-6;
+    %Fractional oxygenation
+    options.Y = 0.95;
+    %difference in magnetic susceptibility between vessel and tissue
+    options.deltaChi = options.HCT * (1 - options.Y) * options.X_dHb;    
+    % deltaChi_Blood/Tissue value from Pathak et al.
+    %options.deltaChi = 3 * 10^-8;
+    disp(['hematocrit fraction = ' num2str(options.HCT)])
+    disp(['magnetic susceptibilty of deoxyhaemaglobin fixed at ' num2str(options.X_dHb) ' ppm'])
+    disp(['fractional oxygenation = ' num2str(options.Y)])
+    disp(['magnetic susceptibility difference between vessel and tissue = ' num2str(options.deltaChi) 'equation: HCT * (1 - Y) * X_dHb'])
+elseif strcmp(interface,'maternalfetal')
+    %calculate susceptibility between fetal blood and maternal 
+    disp('maternal-fetal interface!');
+    %TODO
+    disp('TODO! Want to define a background maternal oxygenation map and use this to calculate the inside/outside susceptibility difference. Each single finite perturber would have a different thing?')
+
+elseif strcmp(interface,'airtissue')
+    %from Vignaud et al MRM 2005
+    %https://onlinelibrary.wiley.com/doi/10.1002/mrm.20576
+    disp('air-tissue interface!');
+    ChiGas = 0.18e-6;
+    %blood volume fraction
+    F = 0.95;
+    ChiParenchyma = -9e-6;
+    ChiBlood = -9e-6;
+    options.deltaChi = ChiGas - ((1-F)*ChiParenchyma + F*ChiBlood);
+    disp(['magnetic susceptibilty of gas fixed at ' num2str(ChiGas) ' ppm'])
+    disp(['magnetic susceptibilty of parenchyma fixed at ' num2str(ChiParenchyma) ' ppm'])
+    disp(['magnetic susceptibilty of blood fixed at ' num2str(ChiBlood) ' ppm'])
+    disp(['blood volume fraction = ' num2str(F)])    
+    disp(['magnetic susceptibility difference between air and tissue = ' num2str(options.deltaChi) 'equation: ChiGas - ((1-F)*ChiParenchyma + F*ChiBlood'])
+else
+    error(strcat('interface: ', interface, ' not recognised!'))
+end
+
+
+
+
+
+
+
+
+%define the hematocrit fraction
+options.HCT = 0.5;
+%magnetic susceptibilty of deoxyhaemaglobin is 2.26 ppm
+options.X_dHb = 2.26 * 10^-6;
+%Fractional oxygenation
+options.Y = 0.95;
+
+
+
+
+
+options.save=1;

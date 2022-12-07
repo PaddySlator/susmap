@@ -1,0 +1,27 @@
+DATADIR = '/Users/paddyslator/OneDrive - University College London/data/placenta-modelling-mri/network_meshes/NIFTI/';
+%MAPDIR = '/Users/paddyslator/OneDrive - University College London/data/placenta-modelling-mri/network_meshes/maps';
+MAPDIR = '/Users/paddyslator/OneDrive - University College London/data/placenta-modelling-mri/network_meshes/output/maps/';
+
+filepath = 'healthytree00001.nii.gz';
+[~,strippedfilepath]=fileparts(filepath);
+susmappath = strcat(MAPDIR,'susmap_',strippedfilepath);
+
+interface='bloodtissue';
+placentamap = mesh2fieldshift_FPM(strcat(DATADIR,filepath),interface);
+placentamap = single(placentamap);
+niftiwrite(placentamap,susmappath);
+
+%%
+TE = [0.01 0.03 0.05 0.07 0.09 0.12];
+% [signal,signalall,phaseshift]= fieldshift2signal(lungmap, TE);
+
+
+options.voxblur = [4 4 4];
+
+[signalmap,~,~]= fieldshift2signal([susmappath '.nii'], TE, options);
+signalmap = single(signalmap);
+niftiwrite(signalmap,strcat(MAPDIR,'t2complexmap_', strippedfilepath));   
+niftiwrite(abs(signalmap),strcat(MAPDIR,'t2map_', strippedfilepath));   
+
+
+

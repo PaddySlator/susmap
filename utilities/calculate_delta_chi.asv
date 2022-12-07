@@ -1,0 +1,21 @@
+function delta_chi = calculate_delta_chi(interface)
+
+%allowed interfaces
+allowed_interfaces = {'bloodtissue','airtissue'};
+
+%make sure input is character array
+interface = char(interface);
+
+%check if 
+
+if strcmp(interface,'bloodtissue')
+
+
+
+elif
+
+
+
+else
+    error(strcat('interface: interface, not recognised!'))
+
