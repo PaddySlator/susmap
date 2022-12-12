@@ -5,7 +5,8 @@ function [susmap, signalmap] = calculate_maps(filepath, varargin)
 %Inputs:
 %       filepath: binary mask in nifti format or mesh in stl format
 %       varargin:
-%               1. MAPDIR. Specify a directory path to save the output maps to. If
+%		1. cluster flag: 0 if running locally, 1 if running on cluster
+%               2. MAPDIR. Specify a directory path to save the output maps to. If
 %               not specified will save in the default cluster location
 % 
 %
