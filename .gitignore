@@ -1,2 +1,4 @@
 examples/*.asv
 *.asv
+log_files/*
+*/log_files/*
